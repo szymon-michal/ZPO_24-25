@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: fines-db
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: finesadmin
+      POSTGRES_PASSWORD: finespassword
+      POSTGRES_DB: fines_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./SQL:/temp/SQL
+
+
+volumes:
+  postgres_data:
