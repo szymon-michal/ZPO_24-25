@@ -15,7 +15,7 @@ public class StatsController {
     
     private final FineService fineService;
     
-    @GetMapping("/officers/{badgeNumber}/issued")
+    @GetMapping("/officers/{badgeNumber}/issued") //działa
     public ResponseEntity<List<Fine>> getOfficerIssuedFines(@PathVariable String badgeNumber) { //tez dzika rekurencja ale do zmiany na OfficersController
         List<Fine> fines = fineService.findByPoliceOfficerServiceId(badgeNumber);
         return ResponseEntity.ok(fines);

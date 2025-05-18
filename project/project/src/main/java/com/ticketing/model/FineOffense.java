@@ -1,5 +1,6 @@
 package com.ticketing.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,10 +24,12 @@ public class FineOffense {
     
     @ManyToOne
     @JoinColumn(name = "fine_id", nullable = false)
+    @JsonBackReference("fine-offense")
     private Fine fine;
     
     @ManyToOne
     @JoinColumn(name = "offense_id", nullable = false)
+    @JsonBackReference("offense-fineOffense")
     private Offense offense;
     
     @Column(nullable = false)

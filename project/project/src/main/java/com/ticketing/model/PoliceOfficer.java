@@ -1,5 +1,6 @@
 package com.ticketing.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -45,6 +46,7 @@ public class PoliceOfficer {
     private LocalDateTime updatedAt;
     
     @OneToMany(mappedBy = "policeOfficer")
+    @JsonManagedReference("officer-fine")
     private List<Fine> issuedFines;
     
     @PrePersist

@@ -1,5 +1,7 @@
 package com.ticketing.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,10 +27,12 @@ public class Fine {
     
     @ManyToOne
     @JoinColumn(name = "police_officer_id", nullable = false)
+    @JsonBackReference("officer-fine")
     private PoliceOfficer policeOfficer;
     
     @ManyToOne
     @JoinColumn(name = "driver_id", nullable = false)
+    @JsonBackReference("driver-fine")
     private Driver driver;
     
     @Column(name = "issue_date", nullable = false)
@@ -61,8 +65,9 @@ public class Fine {
     
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-    
-    @OneToMany(mappedBy = "fine", cascade = CascadeType.ALL, orphanRemoval = true)
+
+    @OneToMany(mappedBy = "fine", cascade = CascadeType.ALL)
+    @JsonManagedReference("fine-offense")
     private List<FineOffense> fineOffenses;
     
     @PrePersist

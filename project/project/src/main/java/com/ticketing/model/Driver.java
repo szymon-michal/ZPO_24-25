@@ -1,5 +1,6 @@
 package com.ticketing.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,7 +21,7 @@ public class Driver {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(unique = true, nullable = false, length = 11)
+    @Column(unique = true, nullable = false, length = 11,name = "pesel")
     private String pesel;
     
     @Column(name = "license_number", unique = true, nullable = false)
@@ -55,6 +56,7 @@ public class Driver {
     private LocalDateTime updatedAt;
     
     @OneToMany(mappedBy = "driver")
+    @JsonManagedReference("driver-fine")
     private List<Fine> fines;
     
     @PrePersist

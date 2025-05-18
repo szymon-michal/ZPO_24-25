@@ -20,16 +20,24 @@ public class DriverController {
     private final FineService fineService;
     
     @PostMapping
-    public ResponseEntity<Driver> createDriver(@RequestBody Driver driver) {//TOTEST
+    public ResponseEntity<Driver> createDriver(@RequestBody Driver driver) {//działa
         if (driverService.existsByPesel(driver.getPesel())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(driverService.save(driver));
     }
-    
+    @GetMapping("/id/{id}")
+    public ResponseEntity<Driver> getDriverById(@PathVariable Long id) {
+        return driverService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+//zależnie od potrzeb może kiedyś pozostałe funkcjie po id
+
     @GetMapping("/{pesel}")
-    public ResponseEntity<Driver> getDriver(@PathVariable String pesel) {// niedziała jaks dzika rekurencja wchodzi xd
+    public ResponseEntity<Driver> getDriver(@PathVariable String pesel) {//działa perfekyjnie czasem chyba za dużo danych
         return driverService.findByPesel(pesel)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -42,7 +50,7 @@ public class DriverController {
     }
     
     @GetMapping("/{pesel}/tickets")
-    public ResponseEntity<List<Fine>> getDriverTickets( //kolejna dzika rekurencja
+    public ResponseEntity<List<Fine>> getDriverTickets( //działa właściwie
             @PathVariable String pesel,
             @RequestParam(required = false) Fine.FineStatus status) {
         List<Fine> fines = fineService.findByDriverPesel(pesel);

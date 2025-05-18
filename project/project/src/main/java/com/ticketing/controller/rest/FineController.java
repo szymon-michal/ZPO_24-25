@@ -19,7 +19,7 @@ public class FineController {
     private final FineService fineService;
 
     @PostMapping
-    public ResponseEntity<Fine> createFine(@RequestBody FineCreationDTO fineCreationDTO) {
+    public ResponseEntity<Fine> createFine(@RequestBody FineCreationDTO fineCreationDTO) {//racej dzial
         Fine fine = fineService.issueFine(fineCreationDTO);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -30,42 +30,48 @@ public class FineController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Fine> getFine(@PathVariable Long id) { //dzika rekurencja z oficerem
+    public ResponseEntity<Fine> getFine(@PathVariable Long id) { //działa
         return fineService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-//    @PatchMapping("/{id}")
-//    public ResponseEntity<Fine> updateFineStatus(
-//            @PathVariable Long id,
-//            @RequestParam Fine.FineStatus status) {
-//        return fineService.findById(id)
-//                .map(fine -> {
-//                    if (status == Fine.FineStatus.ACCEPTED) {
-//                        return ResponseEntity.ok(fineService.acceptFine(fine.getFineNumber()));
-//                    } else if (status == Fine.FineStatus.CANCELED) {
-//                        return ResponseEntity.ok(fineService.cancelFine(fine.getFineNumber(), "Administrative cancellation"));
-//                    }
-//                    return ResponseEntity.badRequest().build();
-//                })
-//                .orElse(ResponseEntity.notFound().build());
-//    }
-//
-//    @PostMapping("/{id}/cancel")
-//    public ResponseEntity<Fine> cancelFine(
-//            @PathVariable Long id,
-//            @RequestParam(required = false) String reason) {
-//        return fineService.findById(id)
-//                .map(fine -> {
-//                    if (fine.getStatus() == Fine.FineStatus.CANCELED) {
-//                        return ResponseEntity.status(HttpStatus.CONFLICT).build();
-//                    }
-//                    return ResponseEntity.ok(fineService.cancelFine(
-//                            fine.getFineNumber(),
-//                            reason != null ? reason : "Administrative cancellation"
-//                    ));
-//                })
-//                .orElse(ResponseEntity.notFound().build());
-//    }
+
+    @PostMapping("/{id}/cancel")
+    public ResponseEntity<Fine> cancelFine( //NIE działa będzie zmieniał status na cancelled
+            @PathVariable Long id,
+            @RequestParam(required = false) String reason) {
+        return (ResponseEntity<Fine>) fineService.findById(id)
+                .map(fine -> {
+                    if (fine.getStatus() == Fine.FineStatus.CANCELED) {
+                        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+                    }
+                    return ResponseEntity.ok(fineService.cancelFine(
+                            fine.getFineNumber(),
+                            reason != null ? reason : "Administrative cancellation"
+                    ));
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+    @PostMapping("/{id}/accept")
+    public ResponseEntity<Fine> acceptFine(@PathVariable Long id) {//NIE działa będzie zmieniał status na accepted
+        return (ResponseEntity<Fine>) fineService.findById(id)
+                .map(fine -> {
+                    if (fine.getStatus() == Fine.FineStatus.ACCEPTED) {
+                        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+                    }
+                    return ResponseEntity.ok(fineService.acceptFine(fine.getFineNumber()));
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+    @DeleteMapping("/{id}/delete")//działa usuwa rekordy
+    public ResponseEntity<Fine> deleteFine(@PathVariable Long id) {
+        return fineService.findById(id)
+                .map(fine -> {
+                    fineService.deleteById(id);
+                    return ResponseEntity.ok(fine);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
 }

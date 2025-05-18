@@ -158,4 +158,15 @@ public class FineService {
         long count = fineRepository.count() + 1;
         return String.format("FINE-%s-%04d", datePart, count);
     }
+
+    public boolean existsById(Long id) {
+        if(fineRepository.existsById(id)) {
+            return true;
+        }
+        return false;
+    }
+
+    public void deleteById(Long id) {
+        fineRepository.deleteById(id);
+    }
 }

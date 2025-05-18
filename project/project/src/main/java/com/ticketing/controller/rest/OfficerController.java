@@ -14,7 +14,7 @@ public class OfficerController {
     
     private final PoliceOfficerService policeOfficerService;
     
-    @PostMapping
+    @PostMapping//działa
     public ResponseEntity<PoliceOfficer> createOfficer(@RequestBody PoliceOfficer officer) {
         if (policeOfficerService.existsByServiceId(officer.getServiceId())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -22,8 +22,13 @@ public class OfficerController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(policeOfficerService.save(officer));
     }
-    
-    @GetMapping("/{badgeNumber}")
+    @GetMapping("/id/{id}")//działa
+    public ResponseEntity<PoliceOfficer> getOfficerById(@PathVariable Long id) {
+        return policeOfficerService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+    @GetMapping("/{badgeNumber}") //działa
     public ResponseEntity<PoliceOfficer> getOfficer(@PathVariable String badgeNumber) {//dzika rekurencja
         return policeOfficerService.findByServiceId(badgeNumber)
                 .map(ResponseEntity::ok)

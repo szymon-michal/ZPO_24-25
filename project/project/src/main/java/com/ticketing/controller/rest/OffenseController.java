@@ -16,25 +16,25 @@ public class OffenseController {
     
     private final OffenseService offenseService;
     
-    @GetMapping
+    @GetMapping//działa
     public ResponseEntity<List<Offense>> getAllOffenses() {
         return ResponseEntity.ok(offenseService.findAll());
     }
     
-    @PostMapping("/new")
+    @PostMapping("/new")//działa
     public ResponseEntity<Offense> createOffense(@RequestBody Offense offense) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(offenseService.save(offense));
     }
     
-    @GetMapping("/{id}")
+    @GetMapping("/{id}")//działa
     public ResponseEntity<Offense> getOffense(@PathVariable Long id) { //kolejna dzika rekurencja
         return offenseService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
     
-    @PutMapping("/{id}")
+    @PutMapping("/{id}")//raczej dziala ale jeszcze nie 100%
     public ResponseEntity<Offense> updateOffense(@PathVariable Long id, @RequestBody Offense offense) {
         if (!offenseService.findById(id).isPresent()) {
             return ResponseEntity.notFound().build();
