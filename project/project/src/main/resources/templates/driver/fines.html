@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Traffic Violations</title>
+    <link rel="stylesheet" href="/css/driver-styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Your Traffic Violations</h1>
+            <div class="user-info">
+                <p>
+                    <span th:text="${driver.firstName + ' ' + driver.lastName}">John Doe</span><br>
+                    <small>License: <span th:text="${driver.licenseNumber}">ABC123456</span></small>
+                </p>
+            </div>
+        </header>
+        
+        <div class="alert success" th:if="${success}" th:text="${success}"></div>
+        <div class="alert error" th:if="${error}" th:text="${error}"></div>
+        
+        <div class="points-summary">
+            <div class="points-card">
+                <h2>Total Demerit Points</h2>
+                <div class="points" th:classappend="${totalPoints > 20 ? 'high' : (totalPoints > 10 ? 'medium' : 'low')}">
+                    <span th:text="${totalPoints}">0</span>
+                </div>
+                <p class="warning" th:if="${totalPoints > 20}">
+                    Warning: You are close to license suspension threshold
+                </p>
+            </div>
+        </div>
+        
+        <div class="fines-list">
+            <h2>Your Tickets</h2>
+            
+            <div th:if="${fines.empty}" class="empty-state">
+                <p>You have no traffic violations on record.</p>
+            </div>
+            
+            <div th:unless="${fines.empty}" class="fine-cards">
+                <div th:each="fine : ${fines}" class="fine-card" th:classappend="${fine.status.name()}">
+                    <div class="fine-header">
+                        <h3 th:text="${'Ticket: ' + fine.fineNumber}">Ticket: FINE-20250101-0001</h3>
+                        <span class="status" th:text="${fine.status}">ISSUED</span>
+                    </div>
+                    
+                    <div class="fine-details">
+                        <p>
+                            <strong>Date:</strong> 
+                            <span th:text="${#temporals.format(fine.issueDate, 'dd-MM-yyyy HH:mm')}">01-01-2025 10:30</span>
+                        </p>
+                        <p>
+                            <strong>Location:</strong> 
+                            <span th:text="${fine.location}">Main Street</span>
+                        </p>
+                        <p>
+                            <strong>Points:</strong> 
+                            <span th:text="${fine.totalPoints}">5</span>
+                        </p>
+                        <p>
+                            <strong>Amount:</strong> 
+                            <span th:text="${fine.totalAmount + ' PLN'}">500 PLN</span>
+                        </p>
+                    </div>
+                    
+                    <div class="fine-actions">
+                        <a th:href="@{/driver/fine-details(fineNumber=${fine.fineNumber},pesel=${driver.pesel})}" 
+                           class="btn-secondary">View Details</a>
+                           
+                        <form th:if="${fine.status.name() == 'ISSUED'}" 
+                              th:action="@{/driver/accept-fine}" method="post">
+                            <input type="hidden" name="fineNumber" th:value="${fine.fineNumber}">
+                            <input type="hidden" name="pesel" th:value="${driver.pesel}">
+                            <button type="submit" class="btn-primary">Accept Ticket</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <a href="/driver" class="btn-secondary">Logout</a>
+        </div>
+    </div>
+    
+    <script src="/js/driver-app.js"></script>
+</body>
+</html>

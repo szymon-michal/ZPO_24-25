@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Details</title>
+    <link rel="stylesheet" href="/css/driver-styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a th:href="@{/driver/fines(pesel=${driver.pesel})}" class="back-link">
+                <span>&larr; Back to Tickets</span>
+            </a>
+            <h1>Ticket Details</h1>
+        </header>
+        
+        <div class="fine-detail-card" th:classappend="${fine.status.name()}">
+            <div class="fine-header">
+                <h2 th:text="${fine.fineNumber}">FINE-20250101-0001</h2>
+                <span class="status" th:text="${fine.status}">ISSUED</span>
+            </div>
+            
+            <div class="detail-section">
+                <h3>General Information</h3>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <span class="label">Issue Date:</span>
+                        <span class="value" th:text="${#temporals.format(fine.issueDate, 'dd-MM-yyyy HH:mm')}">01-01-2025 10:30</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Location:</span>
+                        <span class="value" th:text="${fine.location}">Main Street</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Total Points:</span>
+                        <span class="value" th:text="${fine.totalPoints}">5</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Total Amount:</span>
+                        <span class="value" th:text="${fine.totalAmount + ' PLN'}">500 PLN</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="detail-section">
+                <h3>Officer Information</h3>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <span class="label">Officer:</span>
+                        <span class="value" th:text="${fine.policeOfficer.firstName + ' ' + fine.policeOfficer.lastName}">John Smith</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Badge Number:</span>
+                        <span class="value" th:text="${fine.policeOfficer.badgeNumber}">A12345</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="label">Department:</span>
+                        <span class="value" th:text="${fine.policeOfficer.department}">Traffic Division</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="detail-section">
+                <h3>Offenses</h3>
+                <div class="offenses-list">
+                    <div th:each="fineOffense : ${fine.fineOffenses}" class="offense-item">
+                        <div class="offense-header">
+                            <h4 th:text="${fineOffense.offense.description}">Speeding</h4>
+                            <span class="repeat-badge" th:if="${fineOffense.isRepeat}">Repeat Offense</span>
+                        </div>
+                        <div class="offense-details">
+                            <div class="offense-detail">
+                                <span class="label">Code:</span>
+                                <span class="value" th:text="${fineOffense.offense.code}">SP-01</span>
+                            </div>
+                            <div class="offense-detail">
+                                <span class="label">Points:</span>
+                                <span class="value" th:text="${fineOffense.points}">3</span>
+                            </div>
+                            <div class="offense-detail">
+                                <span class="label">Amount:</span>
+                                <span class="value" th:text="${fineOffense.amount + ' PLN'}">300 PLN</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="detail-section" th:if="${fine.status.name() == 'ISSUED'}">
+                <div class="action-buttons">
+                    <form th:action="@{/driver/accept-fine}" method="post">
+                        <input type="hidden" name="fineNumber" th:value="${fine.fineNumber}">
+                        <input type="hidden" name="pesel" th:value="${driver.pesel}">
+                        <button type="submit" class="btn-primary">Accept Ticket</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="detail-section" th:if="${fine.status.name() == 'ACCEPTED'}">
+                <div class="acceptance-info">
+                    <p>
+                        <strong>Accepted on:</strong> 
+                        <span th:text="${#temporals.format(fine.acceptanceDate, 'dd-MM-yyyy HH:mm')}">02-01-2025 15:45</span>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="detail-section" th:if="${fine.status.name() == 'CANCELED'}">
+                <div class="cancellation-info">
+                    <p>
+                        <strong>Canceled on:</strong> 
+                        <span th:text="${#temporals.format(fine.cancellationDate, 'dd-MM-yyyy HH:mm')}">02-01-2025 15:45</span>
+                    </p>
+                    <p>
+                        <strong>Reason:</strong> 
+                        <span th:text="${fine.cancellationReason}">Administrative error</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/js/driver-app.js"></script>
+</body>
+</html>

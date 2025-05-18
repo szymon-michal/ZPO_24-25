@@ -17,7 +17,7 @@ The system uses the following Docker components:
 ### 1. Connect to the Database
 
 You can connect to the PostgreSQL database using any PostgreSQL client with the following credentials:
-
+# !Desclaimer! don't use localhost instead usr 0.0.0.0 or you will be forced to debug it for whole day like me :) 
 - Host: localhost
 - Port: 5432
 - Database: fines_db

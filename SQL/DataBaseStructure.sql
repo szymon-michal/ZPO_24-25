@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS police_officers CASCADE;
 
 -- Create police_officers table
 CREATE TABLE police_officers (
-    id SERIAL PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     service_id VARCHAR(20) UNIQUE NOT NULL,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE police_officers (
 
 -- Create drivers table
 CREATE TABLE drivers (
-    id SERIAL PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     pesel VARCHAR(11) UNIQUE NOT NULL,
     license_number VARCHAR(20) UNIQUE NOT NULL,
     first_name VARCHAR(50) NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE drivers (
 
 -- Create offenses table
 CREATE TABLE offenses (
-    id SERIAL PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     code VARCHAR(20) UNIQUE NOT NULL,
     description TEXT NOT NULL,
     penalty_points INT NOT NULL,
@@ -53,10 +53,10 @@ CREATE TABLE offenses (
 
 -- Create fines table
 CREATE TABLE fines (
-    id SERIAL PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     fine_number VARCHAR(20) UNIQUE NOT NULL,
-    police_officer_id INT NOT NULL REFERENCES police_officers(id),
-    driver_id INT NOT NULL REFERENCES drivers(id),
+    police_officer_id BIGINT NOT NULL REFERENCES police_officers(id),
+    driver_id BIGINT NOT NULL REFERENCES drivers(id),
     issue_date TIMESTAMP NOT NULL,
     location VARCHAR(255) NOT NULL,
     total_amount DECIMAL(10, 2) NOT NULL,
@@ -73,9 +73,9 @@ CREATE TABLE fines (
 
 -- Create fine_offenses junction table (for many-to-many relationship)
 CREATE TABLE fine_offenses (
-    id SERIAL PRIMARY KEY,
-    fine_id INT NOT NULL,
-    offense_id INT NOT NULL,
+    id BIGSERIAL PRIMARY KEY,
+    fine_id BIGINT NOT NULL,
+    offense_id BIGINT NOT NULL,
     amount DECIMAL(10, 2) NOT NULL,
     points INT NOT NULL,
     is_repeat BOOLEAN DEFAULT false,
