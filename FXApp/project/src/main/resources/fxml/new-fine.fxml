@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fitToWidth="true" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.police.fines.controller.NewFineController">
+   <content>
+      <VBox spacing="20.0" styleClass="new-fine-container">
+         <children>
+            <!-- Driver Search Section -->
+            <VBox spacing="10.0" styleClass="section">
+               <children>
+                  <Label styleClass="section-title" text="1. Wyszukaj kierowcę" />
+                  <HBox alignment="CENTER_LEFT" spacing="10.0">
+                     <children>
+                        <Label text="PESEL:" />
+                        <TextField fx:id="peselField" promptText="Wprowadź numer PESEL (11 cyfr)" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="searchDriverButton" styleClass="primary-button" text="Szukaj" />
+                     </children>
+                  </HBox>
+                  <Label fx:id="driverInfoLabel" styleClass="driver-info" text="Brak wybranego kierowcy" />
+               </children>
+            </VBox>
+            
+            <!-- Location Section -->
+            <VBox spacing="10.0" styleClass="section">
+               <children>
+                  <Label styleClass="section-title" text="2. Miejsce wykroczenia" />
+                  <TextField fx:id="locationField" promptText="Wprowadź adres lub opis miejsca wykroczenia" />
+               </children>
+            </VBox>
+            
+            <!-- Offenses Section -->
+            <VBox spacing="10.0" styleClass="section" VBox.vgrow="ALWAYS">
+               <children>
+                  <Label styleClass="section-title" text="3. Wybierz wykroczenia" />
+                  <TableView fx:id="offensesTable" VBox.vgrow="ALWAYS">
+                     <columns>
+                        <TableColumn fx:id="selectedColumn" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" text="Wybór" />
+                        <TableColumn fx:id="codeColumn" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" text="Kod" />
+                        <TableColumn fx:id="descriptionColumn" minWidth="200.0" prefWidth="300.0" text="Opis wykroczenia" />
+                        <TableColumn fx:id="pointsColumn" maxWidth="80.0" minWidth="60.0" prefWidth="70.0" text="Punkty" />
+                        <TableColumn fx:id="amountColumn" maxWidth="120.0" minWidth="100.0" prefWidth="110.0" text="Kwota (zł)" />
+                        <TableColumn fx:id="repeatColumn" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" text="Recydywa" />
+                     </columns>
+                  </TableView>
+               </children>
+            </VBox>
+            
+            <!-- Summary Section -->
+            <VBox spacing="10.0" styleClass="section">
+               <children>
+                  <Label styleClass="section-title" text="4. Podsumowanie" />
+                  <HBox spacing="30.0">
+                     <children>
+                        <Label fx:id="totalPointsLabel" styleClass="total-label" text="Suma punktów: 0" />
+                        <Label fx:id="totalAmountLabel" styleClass="total-label" text="Suma kwoty: 0 zł" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            
+            <!-- Actions Section -->
+            <VBox alignment="CENTER" spacing="10.0" styleClass="section">
+               <children>
+                  <Button fx:id="issueFineButton" styleClass="primary-button large-button" text="Wystaw mandat" />
+                  <ProgressIndicator fx:id="loadingIndicator" maxHeight="20.0" maxWidth="20.0" />
+                  <Label fx:id="statusLabel" styleClass="status-message" />
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </VBox>
+   </content>
+</ScrollPane>
