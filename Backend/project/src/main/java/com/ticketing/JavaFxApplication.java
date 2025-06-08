@@ -1,12 +1,12 @@
 package com.ticketing;
 
-import com.ticketing.ui.StageInitializer;
+//import com.ticketing.ui.StageInitializer;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.springframework.context.ConfigurableApplicationContext;
 
-public class JavaFxApplication extends Application {
+public abstract class JavaFxApplication extends Application {
 
     private ConfigurableApplicationContext applicationContext;
 
@@ -15,11 +15,11 @@ public class JavaFxApplication extends Application {
         applicationContext = TrafficViolationsApplication.getContext();
     }
 
-    @Override
-    public void start(Stage primaryStage) {
-        StageInitializer stageInitializer = applicationContext.getBean(StageInitializer.class);
-        stageInitializer.initializeStage(primaryStage);
-    }
+//    @Override
+//    public void start(Stage primaryStage) {
+//        StageInitializer stageInitializer = applicationContext.getBean(StageInitializer.class);
+//        stageInitializer.initializeStage(primaryStage);
+//    }
 
     @Override
     public void stop() {

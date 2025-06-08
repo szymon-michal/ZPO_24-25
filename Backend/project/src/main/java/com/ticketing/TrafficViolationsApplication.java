@@ -13,9 +13,7 @@ public class TrafficViolationsApplication {
     public static void main(String[] args) {
         // Start Spring Boot application
         context = SpringApplication.run(TrafficViolationsApplication.class, args);
-        
-        // Launch JavaFX application
-        Application.launch(JavaFxApplication.class, args);
+
     }
 
     public static ConfigurableApplicationContext getContext() {
