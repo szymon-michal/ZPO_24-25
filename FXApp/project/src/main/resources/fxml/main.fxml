@@ -10,7 +10,7 @@
    <bottom>
       <VBox fx:id="statusBar" styleClass="status-bar">
          <HBox spacing="10.0" styleClass="status-content">
-            <Label fx:id="connectionStatusLabel" text="Sprawdzanie połączenia..." styleClass="status-label" />
+            <Label fx:id="connectionStatusLabel" text="" styleClass="status-label" />
          </HBox>
       </VBox>
    </bottom>

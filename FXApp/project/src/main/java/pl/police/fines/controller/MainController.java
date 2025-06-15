@@ -46,7 +46,7 @@ public class MainController implements Initializable {
                     connectionStatusLabel.getStyleClass().removeAll("error");
                     connectionStatusLabel.getStyleClass().add("success");
                 } else {
-                    connectionStatusLabel.setText("Brak połączenia z serwerem");
+                    // connectionStatusLabel.setText("Brak połączenia z serwerem");
                     connectionStatusLabel.getStyleClass().removeAll("success");
                     connectionStatusLabel.getStyleClass().add("error");
                 }
@@ -54,7 +54,7 @@ public class MainController implements Initializable {
         });
         
         // Initial status
-        connectionStatusLabel.setText("Sprawdzanie połączenia...");
+        // connectionStatusLabel.setText("Sprawdzanie połączenia...");
     }
     
     private void loadInitialView() {
