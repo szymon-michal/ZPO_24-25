@@ -93,8 +93,29 @@ public class NewFineController implements Initializable {
         statusLabel.setText("");
 
         // Setup table columns
-        selectedColumn.setCellValueFactory(new PropertyValueFactory<>("selected"));
-        selectedColumn.setCellFactory(CheckBoxTableCell.forTableColumn(selectedColumn));
+    selectedColumn.setCellValueFactory(cellData -> {
+        OffenseItem item = cellData.getValue();
+        SimpleBooleanProperty property = new SimpleBooleanProperty(item.isSelected());
+
+        property.addListener((observable, oldValue, newValue) -> {
+            item.setSelected(newValue);
+            updateTotals();
+        });
+
+        return property;
+    });
+
+    selectedColumn.setCellFactory(CheckBoxTableCell.forTableColumn(index -> {
+        OffenseItem item = offensesTable.getItems().get(index);
+        SimpleBooleanProperty property = new SimpleBooleanProperty(item.isSelected());
+
+        property.addListener((observable, oldValue, newValue) -> {
+            item.setSelected(newValue);
+            updateTotals();
+        });
+
+        return property;
+    }));
         selectedColumn.setEditable(true);
         
         codeColumn.setCellValueFactory(new PropertyValueFactory<>("code"));
